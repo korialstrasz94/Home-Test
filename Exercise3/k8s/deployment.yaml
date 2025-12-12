@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: rest-deploy
+  labels:
+    app: rest
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: rest
+  template:
+    metadata:
+      labels:
+        app: rest
+    spec:
+      containers:
+        - name: rest
+          image: rest:latest
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 8080

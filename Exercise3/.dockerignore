@@ -1,0 +1,6 @@
+rest.zip
+app/
+**/node_modules
+**/.git
+bin/
+*.log
