@@ -4,8 +4,8 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 ROOT_DIR="${SCRIPT_DIR}/.."
 
-echo "Checking required commands: minikube, kubectl, docker"
-for cmd in minikube kubectl docker; do
+echo "Checking required commands: minikube, kubectl"
+for cmd in minikube kubectl; do
   if ! command -v "$cmd" >/dev/null 2>&1; then
     echo "Missing required command: $cmd" >&2
     exit 1
@@ -19,11 +19,8 @@ else
   echo "minikube already running"
 fi
 
-echo "Configuring shell to use minikube's Docker daemon"
-eval "$(minikube -p minikube docker-env)"
-
-echo "Building docker image 'rest:latest' inside minikube's docker daemon"
-docker build -t rest:latest "${ROOT_DIR}"
+echo "Building Docker image inside minikube"
+minikube image build -t rest:latest "${ROOT_DIR}"
 
 echo "Applying Kubernetes manifests"
 kubectl apply -f "${ROOT_DIR}/k8s"
@@ -32,6 +29,14 @@ echo "Waiting for deployment to become ready"
 kubectl rollout status deployment/rest-deploy --timeout=120s
 
 echo "Starting port-forward in background (localhost:8080 -> svc/rest-service:80)"
-kubectl port-forward svc/rest-service 8080:80 &
 
-echo "Deployment complete. You can now curl http://localhost:8080/hello-world"
+nohup kubectl port-forward svc/rest-service 8080:80 \
+  >/dev/null 2>&1 &
+
+echo
+echo "Deployment complete."
+echo "Service available at:"
+echo "  http://localhost:8080"
+echo
+echo "You can now call:"
+echo "  curl http://localhost:8080/hello-world"
