@@ -1,0 +1,18 @@
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "AllowBackupUploaderPut",
+            "Effect": "Allow",
+            "Principal": {
+                "AWS": "arn:aws:iam::804049005120:role/backup_uploader"
+            },
+            "Action": [
+                "s3:PutObject",
+                "s3:PutObjectAcl",
+                "s3:AbortMultipartUpload"
+            ],
+            "Resource": "arn:aws:s3:::lhs-backups-180d/*"
+        }
+    ]
+}
