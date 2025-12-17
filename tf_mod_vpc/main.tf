@@ -9,6 +9,7 @@ locals {
 }
 
 resource "aws_vpc" "main" {
+  #TODO: Validate if CIDR block is big enough to handle the Subnet CIDR blocks.
   cidr_block           = var.cidr_block
   enable_dns_support   = true
   enable_dns_hostnames = true

@@ -62,3 +62,7 @@ No modules.
 |------|---------|
 |  terraform     | >= 1.3
 |  aws           | ~> 5.0
+
+## Known Errors
+
+If the sum of the Subnet ciders is greater than what is provided in the VPC CIDR, the Apply is going to fail, even if the Plan seems to be correct.
