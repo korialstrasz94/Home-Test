@@ -60,5 +60,5 @@ No modules.
 
 | Name | Version |
 |------|---------|
-|  tf     | 1.0
-|  aws    | 1.0
+|  terraform     | >= 1.3
+|  aws           | ~> 5.0
