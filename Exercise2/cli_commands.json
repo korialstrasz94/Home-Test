@@ -1,0 +1,87 @@
+[
+{
+    "Command": "aws s3api get-public-access-block --bucket lhs-backups-180d",
+    "PublicAccessBlockConfiguration": {
+        "BlockPublicAcls": true,
+        "IgnorePublicAcls": true,
+        "BlockPublicPolicy": true,
+        "RestrictPublicBuckets": true
+    }
+},
+{
+    "Command": "aws s3api get-bucket-tagging --bucket lhs-backups-180d",
+    "TagSet": [
+        {
+            "Key": "Environment",
+            "Value": "Test"
+        },
+        {
+            "Key": "Owner",
+            "Value": "tardi.richard@outlook.hu"
+        },
+        {
+            "Key": "Purpose",
+            "Value": "Storing backups for 180 Days"
+        },
+        {
+            "Key": "CostCenter",
+            "Value": "11:111fE"
+        }
+    ]
+    },
+{
+    "Command": "aws s3api get-bucket-ownership-controls --bucket lhs-backups-180d",
+    "OwnershipControls": {
+        "Rules": [
+            {
+                "ObjectOwnership": "BucketOwnerEnforced"
+            }
+        ]
+    }
+},
+{
+    "Command": "aws s3api get-bucket-encryption --bucket lhs-backups-180d",
+    "ServerSideEncryptionConfiguration": {
+        "Rules": [
+            {
+                "ApplyServerSideEncryptionByDefault": {
+                    "SSEAlgorithm": "AES256"
+                },
+                "BucketKeyEnabled": true
+            }
+        ]
+    }
+},
+{
+    "Command": "aws s3api get-bucket-lifecycle-configuration --bucket lhs-backups-180d",
+    "TransitionDefaultMinimumObjectSize": "all_storage_classes_128K",
+    "Rules": [
+        {
+            "Expiration": {
+                "Days": 180
+            },
+            "ID": "Archiving-after-30-days",
+            "Filter": {},
+            "Status": "Enabled",
+            "Transitions": [
+                {
+                    "Days": 30,
+                    "StorageClass": "DEEP_ARCHIVE"
+                }
+            ]
+        }
+    ]
+},                                                                                                                                                        
+{
+    "Command": "aws s3api get-bucket-versioning --bucket lhs-backups-180d",
+    "Status": "Enabled"
+},                                                                                                                                                                 
+{
+    "Command": "aws s3api get-bucket-policy --bucket lhs-backups-180d",
+    "Policy": "{\"Version\":\"2012-10-17\",\"Statement\":[{\"Sid\":\"AllowBackupUploaderPut\",\"Effect\":\"Allow\",\"Principal\":{\"AWS\":\"arn:aws:iam::804049005120:role/backup_uploader\"},\"Action\":[\"s3:PutObject\",\"s3:PutObjectAcl\",\"s3:AbortMultipartUpload\"],\"Resource\":\"arn:aws:s3:::lhs-backups-180d/*\"}]}"
+},
+{
+    "Command": "aws s3api get-bucket-location --bucket lhs-backups-180d",
+    "LocationConstraint": "eu-north-1"
+}
+]
